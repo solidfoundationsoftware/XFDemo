@@ -49,10 +49,10 @@ namespace XFDemoApp.ViewModels
 
         private async void OnSave()
         {
-            Item newItem = new Item()
+            Listing newItem = new Listing()
             {
-                Id = Guid.NewGuid().ToString(),
-                Text = Text,
+                PMListingId = Guid.NewGuid().ToString(),
+                ListingTitle = Text,
                 Description = Description
             };
 

@@ -11,6 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <theme:Sizes />
                 <theme:Colors />
+                <theme:Converters />
                 <theme:ImplicitStyles />
                 <theme:Styles />
             </ResourceDictionary.MergedDictionaries>

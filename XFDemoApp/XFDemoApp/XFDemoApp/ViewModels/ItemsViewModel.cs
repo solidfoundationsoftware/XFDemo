@@ -12,20 +12,21 @@ namespace XFDemoApp.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        private Item _selectedItem;
+        protected const string NO_DATA_MESSAGE = "You have no listings in your inventory";
+        private Listing _selectedItem;
 
-        public ObservableCollection<Item> Items { get; }
+        public ObservableCollection<Listing> Items { get; }
         public Command LoadItemsCommand { get; }
         public Command AddItemCommand { get; }
-        public Command<Item> ItemTapped { get; }
+        public Command<Listing> ItemTapped { get; }
 
         public ItemsViewModel()
         {
-            Title = "Browse";
-            Items = new ObservableCollection<Item>();
+            Title = "Inventory";
+            Items = new ObservableCollection<Listing>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
 
-            ItemTapped = new Command<Item>(OnItemSelected);
+            ItemTapped = new Command<Listing>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
         }
@@ -53,13 +54,15 @@ namespace XFDemoApp.ViewModels
             }
         }
 
-        public void OnAppearing()
+        public async Task OnAppearing()
         {
-            IsBusy = true;
-            SelectedItem = null;
+            if (SelectedItem == null)
+            {
+                await ExecuteLoadItemsCommand();
+            }
         }
 
-        public Item SelectedItem
+        public Listing SelectedItem
         {
             get => _selectedItem;
             set
@@ -74,13 +77,23 @@ namespace XFDemoApp.ViewModels
             await Shell.Current.GoToAsync(nameof(NewItemPage));
         }
 
-        async void OnItemSelected(Item item)
+        async void OnItemSelected(Listing item)
         {
             if (item == null)
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.Id}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.PMListingId}");
+        }
+
+        string noDataMessage = NO_DATA_MESSAGE;
+        public string NoDataMessage
+        {
+            get => noDataMessage;
+            set
+            {
+                SetProperty(ref noDataMessage, value);
+            }
         }
     }
 }

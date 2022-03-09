@@ -55,4 +55,28 @@
         <Setter Property="TextColor"
                 Value="{StaticResource ButtonTextColor}" />
     </Style>
+
+    <Style TargetType="NavigationPage"
+           ApplyToDerivedTypes="True">
+        <Setter Property="BarBackground">
+            <LinearGradientBrush>
+                <GradientStop Color="{DynamicResource PrimaryButtonStartColor}"
+                              Offset="0" />
+                <GradientStop Color="{DynamicResource PrimaryButtonEndColor}"
+                              Offset="1.0" />
+            </LinearGradientBrush>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Grid">
+        <Setter Property="ColumnSpacing"
+                Value="0" />
+        <Setter Property="RowSpacing"
+                Value="0" />
+    </Style>
+
+    <Style TargetType="StackLayout">
+        <Setter Property="Spacing"
+                Value="0" />
+    </Style>
 </ResourceDictionary>

@@ -12,7 +12,7 @@ namespace XFDemoApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IDataStore<Listing> DataStore => DependencyService.Get<IDataStore<Listing>>();
 
         bool isBusy = false;
         public bool IsBusy

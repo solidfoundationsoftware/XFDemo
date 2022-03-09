@@ -8,5 +8,38 @@
         <local:Colors />
     </ResourceDictionary.MergedDictionaries>
 
-    
+    <Style x:Key="LabelBoldStyle"
+           TargetType="Label">
+        <Setter Property="FontFamily"
+                Value="Bold" />
+        <Setter Property="FontAttributes"
+                Value="Bold" />
+    </Style>
+
+    <Style x:Key="PrimaryButtonStyle"
+           TargetType="Button"
+           ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundColor"
+                Value="{DynamicResource PrimaryButtonStartColor }" />
+        <Setter Property="BorderColor"
+                Value="{DynamicResource PrimaryButtonStartColor }" />
+        <Setter Property="TextColor"
+                Value="{DynamicResource OverGradientTextColor }" />
+        <Setter Property="Background">
+            <LinearGradientBrush>
+                <GradientStop Color="{DynamicResource PrimaryButtonStartColor}"
+                              Offset="0" />
+                <GradientStop Color="{DynamicResource PrimaryButtonEndColor}"
+                              Offset="1.0" />
+            </LinearGradientBrush>
+        </Setter>
+                
+    </Style>
+
+    <Style x:Key="ResponsivePaddingStyle"
+           ApplyToDerivedTypes="True"
+           TargetType="Layout">
+        <Setter Property="Padding"
+                Value="{OnIdiom Default='15,15,15,15', Tablet='60,20,60,20'}" />
+    </Style>
 </ResourceDictionary>

@@ -23,6 +23,10 @@ namespace XFDemoApp.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            // Initializing FFImageLoading
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

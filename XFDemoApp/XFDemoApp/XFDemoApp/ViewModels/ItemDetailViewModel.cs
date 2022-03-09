@@ -39,14 +39,16 @@ namespace XFDemoApp.ViewModels
             }
         }
 
+        private Listing selectedListing;
+        public Listing SelectedListing { get => selectedListing; set => SetProperty(ref selectedListing, value); }
+
         public async void LoadItemId(string itemId)
         {
             try
             {
                 var item = await DataStore.GetItemAsync(itemId);
-                Id = item.Id;
-                Text = item.Text;
-                Description = item.Description;
+                SelectedListing = item;
+                
             }
             catch (Exception)
             {

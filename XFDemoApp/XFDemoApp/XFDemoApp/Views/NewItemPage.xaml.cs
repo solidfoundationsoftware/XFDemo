@@ -11,7 +11,7 @@ namespace XFDemoApp.Views
 {
     public partial class NewItemPage : ContentPage
     {
-        public Item Item { get; set; }
+        public Listing Item { get; set; }
 
         public NewItemPage()
         {

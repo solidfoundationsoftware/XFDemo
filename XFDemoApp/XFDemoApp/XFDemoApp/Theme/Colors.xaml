@@ -5,6 +5,21 @@
     <Color x:Key="AccentColor">#FF659AEA</Color>
     <Color x:Key="TextColor">#4C4A4B</Color>
     <Color x:Key="PageColor">#FFFFFF</Color>
+    <Color x:Key="LightBackgroundColor">#FFFFFF</Color>
     <Color x:Key="ButtonBorderColor">Transparent</Color>
     <Color x:Key="ButtonTextColor">#FFFFFF</Color>
+    <Color x:Key="MainWrapperBackgroundColor">#F5F6F8</Color>
+    <Color x:Key="BrandColor">#1B538C</Color>
+    <Color x:Key="ComplementColor">#39CFE2</Color>
+    <Color x:Key="TranslucidBlack">#55000000</Color>
+    <Color x:Key="TranslucidWhite">#11ffffff</Color>
+    <Color x:Key="OkColor">#22C064</Color>
+    <Color x:Key="ErrorColor">Red</Color>
+    <Color x:Key="WarningColor">#ffc107</Color>
+    <Color x:Key="NotificationColor">#1274d1</Color>
+    <Color x:Key="DisabledColor">#bbbbbb</Color>
+    <Color x:Key="OverGradientTextColor">#FFFFFF</Color>
+
+    <Color x:Key="PrimaryButtonStartColor">#FF39CFE2</Color>
+    <Color x:Key="PrimaryButtonEndColor">#1646AA</Color>
 </ResourceDictionary>

@@ -23,10 +23,10 @@ namespace XFDemoApp.Views
             BindingContext = _viewModel = new ItemsViewModel();
         }
 
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
-            _viewModel.OnAppearing();
+            await _viewModel.OnAppearing();
         }
     }
 }

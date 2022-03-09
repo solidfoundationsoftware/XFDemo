@@ -2,13 +2,111 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XFDemoApp.Views.ItemDetailPage"
-             Title="{Binding Title}">
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewModels="clr-namespace:XFDemoApp.ViewModels"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             ios:Page.UseSafeArea="True"
+             Title="Listing Detail"
+             x:DataType="viewModels:ItemDetailViewModel"
+             BackgroundColor="{StaticResource MainWrapperBackgroundColor}"
+             >
 
-    <StackLayout Spacing="20" Padding="15">
-        <Label Text="Text:" FontSize="Medium" />
-        <Label Text="{Binding Text}" FontSize="Small"/>
-        <Label Text="Description:" FontSize="Medium" />
-        <Label Text="{Binding Description}" FontSize="Small"/>
-    </StackLayout>
+    <Grid x:Name="gridContainer"
+         >
+        <ScrollView>
+            <StackLayout Spacing="0">
+                <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}"
+                      >
+                    <ffimageloading:CachedImage Aspect="AspectFit"
+                                                FadeAnimationEnabled="true"
+                                                Source="{Binding SelectedListing.ListingImageUrl}" />
+                </Grid>
+
+                <Grid BackgroundColor="White"
+                      Style="{StaticResource ResponsivePaddingStyle}" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Button Style="{StaticResource PrimaryButtonStyle}"
+                            FontAttributes="Bold"
+                            x:Name="buttonSaveImages"
+                            HorizontalOptions="Fill"
+                            Text="SAVE PHOTO"
+                            VerticalOptions="Start"
+                            WidthRequest="200">
+                    </Button>
+
+                    <Grid HorizontalOptions="Center"
+                          VerticalOptions="Center"
+                          >
+                        <!--<busyindicator:SfBusyIndicator AnimationType="Cupertino"
+                                                       ViewBoxWidth="40"
+                                                       ViewBoxHeight="40"
+                                                       HeightRequest="40"
+                                                       WidthRequest="40"
+                                                       VerticalOptions="Center"
+                                                       TextColor="{DynamicResource AccentColor}"
+                                                       IsBusy="{Binding Source={x:Reference buttonSaveImages}, Path=IsEnabled, Converter={StaticResource NegateBooleanConverter}}" />-->
+                    </Grid>
+                </Grid>
+
+                <StackLayout Spacing="0"
+                             Style="{StaticResource ResponsivePaddingStyle}">
+                    <!--  PRODUCT INFO  -->
+                    <Grid RowSpacing="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  NAME  -->
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelBoldStyle}"
+                               FontSize="{StaticResource SubtitleFontSize}"
+                               HorizontalOptions="StartAndExpand"
+                               LineBreakMode="WordWrap"
+                               Text="{Binding SelectedListing.ListingTitle}"
+                                />
+
+                        <!--  BRAND  -->
+                        <!--<Label Grid.Row="1"
+                               Grid.Column="0"
+                               Margin="0,5,0,0"
+                               HorizontalOptions="End"
+                               HorizontalTextAlignment="End">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span FontSize="{StaticResource MicroFontSize}"
+                                              Text="by " />
+                                        <Span FontAttributes="Bold"
+                                              FontSize="{StaticResource LargeFontSize}"
+                                              Text="{Binding InventoryDetail.Brand, StringFormat='{0}'}"
+                                              TextColor="{DynamicResource AccentColor}" />
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="ButtonBrand_Clicked" />
+                            </Label.GestureRecognizers>
+                        </Label>-->
+
+                        <!--  DESCRIPTION  -->
+                        <!--<Label Grid.Row="2"
+                               Margin="0,20,0,10"
+                               FontSize="{StaticResource MediumFontSize}"
+                               HorizontalOptions="Start"
+                               IsVisible="{Binding PoshmarkIntegrationEnabled, FallbackValue=False}"
+                               Text="{Binding InventoryDetail.Description}"
+                               TextColor="{DynamicResource BaseTextColor}" />-->
+                    </Grid>
+                </StackLayout>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
     
 </ContentPage>
