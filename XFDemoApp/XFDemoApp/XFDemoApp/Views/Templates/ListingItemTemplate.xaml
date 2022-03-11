@@ -1,114 +1,125 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XFDemoApp"
              xmlns:models="clr-namespace:XFDemoApp.Models"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="XFDemoApp.Views.Templates.ListingItemTemplate"
+             xmlns:platform="clr-namespace:XFDemoApp.Platform;assembly=XFDemoApp.Platform"
              x:Name="Self"
-             BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
+             Padding="10,5,10,15"
+             >
     <ContentView.GestureRecognizers>
         <TapGestureRecognizer NumberOfTapsRequired="1"
+                              Tapped="TapGestureRecognizer_Tapped"
                               Command="{Binding Source={x:Reference Self}, Path=ItemTappedCommand}"
                               CommandParameter="{Binding .}">
         </TapGestureRecognizer>
     </ContentView.GestureRecognizers>
-  <ContentView.Content>
-        <Grid RowSpacing="1"
-              ColumnSpacing="1"
-              InputTransparent="True"
-              CascadeInputTransparent="True"
-              x:DataType="models:Listing">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="130" />
-            </Grid.RowDefinitions>
+    <ContentView.Content>
+        <Frame HasShadow="False"
+               Padding="0"
+               x:Name="frameContainer"
+               InputTransparent="True"
+               CascadeInputTransparent="True"
+               BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
+            <!--<Frame.Effects>
+                <platform:DropShadowColorEffect Color="{StaticResource AccentColor}" />
+            </Frame.Effects>-->
+            <Grid RowSpacing="1"
+                  ColumnSpacing="1"
+                  x:DataType="models:Listing">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="130" />
+                </Grid.RowDefinitions>
 
-            <!--FIRST ROW => TITLE & PRICE -->
-            <Grid ColumnSpacing="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <!--FIRST ROW => TITLE & PRICE -->
+                <Grid ColumnSpacing="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <!--TITLE-->
-                <Label Padding="7,10"
-                       BackgroundColor="{StaticResource LightBackgroundColor}"
-                       FontSize="15"
-                       HorizontalOptions="Fill"
-                       HorizontalTextAlignment="Start"
-                       LineBreakMode="TailTruncation"
-                       Text="{Binding ListingTitle}"
-                       Style="{StaticResource LabelBoldStyle}"
-                       TextColor="{StaticResource BrandColor}"
-                       VerticalTextAlignment="Start" />
-
-                <StackLayout Grid.Column="1"
-                             Spacing="0"
-                             Padding="7,5"
-                             BackgroundColor="{StaticResource LightBackgroundColor}">
-                    <Label FontSize="{StaticResource SmallFontSize}"
+                    <!--TITLE-->
+                    <Label Padding="7,10"
+                           BackgroundColor="{StaticResource LightBackgroundColor}"
+                           FontSize="15"
+                           HorizontalOptions="Fill"
+                           HorizontalTextAlignment="Start"
+                           LineBreakMode="TailTruncation"
+                           Text="{Binding ListingTitle}"
                            Style="{StaticResource LabelBoldStyle}"
-                           TextColor="{DynamicResource AccentColor}"
-                           HorizontalTextAlignment="Center"
-                           HorizontalOptions="Center"
-                           Text="{Binding ListingPrice, StringFormat='{0:C0}'}" />
+                           TextColor="{StaticResource BrandColor}"
+                           VerticalTextAlignment="Start" />
 
-                    <Label FontSize="{StaticResource MicroFontSize}"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center"
-                           Text="PRICE" />
-                </StackLayout>
-            </Grid>
+                    <StackLayout Grid.Column="1"
+                                 Spacing="0"
+                                 Padding="7,5"
+                                 BackgroundColor="{StaticResource LightBackgroundColor}">
+                        <Label FontSize="{StaticResource SmallFontSize}"
+                               Style="{StaticResource LabelBoldStyle}"
+                               TextColor="{DynamicResource AccentColor}"
+                               HorizontalTextAlignment="Center"
+                               HorizontalOptions="Center"
+                               Text="{Binding ListingPrice, StringFormat='{0:C0}'}" />
 
-            <!--SECOND ROW => IMAGE AND DESCRIPTION -->
-            <Grid Grid.Row="1"
-                  RowSpacing="1"
-                  ColumnSpacing="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <!--IMAGE-->
-                <Grid Padding="5,5"
-                      WidthRequest="120"
-                      HeightRequest="120"
-                      BackgroundColor="{StaticResource LightBackgroundColor}">
-                    <ffimageloading:CachedImage Aspect="AspectFill"
-                                                FadeAnimationEnabled="true"
-                                                Source="{Binding ListingImageUrl}" />
+                        <Label FontSize="{StaticResource MicroFontSize}"
+                               HorizontalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               Text="PRICE" />
+                    </StackLayout>
                 </Grid>
 
-                <!--LISTING DETAILS-->
-                <Grid RowSpacing="1"
-                      Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
+                <!--SECOND ROW => IMAGE AND DESCRIPTION -->
+                <Grid Grid.Row="1"
+                      RowSpacing="1"
+                      ColumnSpacing="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
 
-                    <!--MESSAGE-->
-                    <Label Grid.Row="0"
-                           Padding="7,10"
-                           BackgroundColor="{DynamicResource LightBackgroundColor}"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Fill"
-                           LineBreakMode="WordWrap"
-                           FontSize="{StaticResource MediumFontSize}"
-                           Text="{Binding OfferToLikersMessage}">
-                    </Label> 
-                    <Label Grid.Row="1"
-                           Padding="7,10"
-                           BackgroundColor="{DynamicResource LightBackgroundColor}"
-                           HorizontalOptions="Fill"
-                           VerticalOptions="Fill"
-                           LineBreakMode="WordWrap"
-                           FontSize="{StaticResource MediumFontSize}"
-                           Text="">
-                    </Label>
+                    <!--IMAGE-->
+                    <Grid Padding="5,5"
+                          WidthRequest="120"
+                          HeightRequest="120"
+                          BackgroundColor="{StaticResource LightBackgroundColor}">
+                        <ffimageloading:CachedImage Aspect="AspectFill"
+                                                    FadeAnimationEnabled="true"
+                                                    Source="{Binding ListingImageUrl}" />
+                    </Grid>
+
+                    <!--LISTING DETAILS-->
+                    <Grid RowSpacing="1"
+                          Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--MESSAGE-->
+                        <Label Grid.Row="0"
+                               Padding="7,10"
+                               BackgroundColor="{DynamicResource LightBackgroundColor}"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill"
+                               LineBreakMode="WordWrap"
+                               FontSize="{StaticResource MediumFontSize}"
+                               Text="{Binding OfferToLikersMessage}">
+                        </Label>
+                        <Label Grid.Row="1"
+                               Padding="7,10"
+                               BackgroundColor="{DynamicResource LightBackgroundColor}"
+                               HorizontalOptions="Fill"
+                               VerticalOptions="Fill"
+                               LineBreakMode="WordWrap"
+                               FontSize="{StaticResource MediumFontSize}"
+                               Text="">
+                        </Label>
+                    </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </Frame>
     </ContentView.Content>
 </ContentView>

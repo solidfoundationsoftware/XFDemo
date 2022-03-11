@@ -7,10 +7,28 @@
              xmlns:model="clr-namespace:XFDemoApp.Models"
              xmlns:templates="clr-namespace:XFDemoApp.Views.Templates"
              BackgroundColor="{StaticResource MainWrapperBackgroundColor}"
+             xmlns:behaviors="clr-namespace:XFDemoApp.Behaviors"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="True"
              x:DataType="local:ItemsViewModel"
              x:Name="BrowseItemsPage">
+    <ContentPage.Resources>
+        <Style TargetType="templates:ListingItemTemplate">
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal" />
+                        <VisualState x:Name="Selected">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor"
+                                        Value="Transparent" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add"
@@ -25,19 +43,29 @@
                  IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
         
     </RefreshView>-->
-    <Grid Padding="10">
+    <Grid Padding="0,10,0,0">
         <CollectionView x:Name="ItemsListView"
                         ItemsSource="{Binding Items}"
                         HorizontalScrollBarVisibility="Never"
                         ItemSizingStrategy="MeasureFirstItem"
-                        SelectionMode="None">
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                        SelectionMode="Single">
+            <CollectionView.Behaviors>
+                <behaviors:HighlightSelectedItemBehavior />
+            </CollectionView.Behaviors>
             <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="15"
+                <LinearItemsLayout ItemSpacing="0"
                                    Orientation="Vertical" />
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <templates:ListingItemTemplate ItemTappedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}" />
+                    <!--<templates:ListingItemTemplate>
+                        <templates:ListingItemTemplate.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                        </templates:ListingItemTemplate.GestureRecognizers>
+                    </templates:ListingItemTemplate>-->
+                    <templates:ListingItemTemplate />
+                    <!--<templates:ListingItemTemplate ItemTappedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}" />-->
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.EmptyView>

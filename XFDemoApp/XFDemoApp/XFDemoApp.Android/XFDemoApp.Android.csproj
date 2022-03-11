@@ -93,6 +93,14 @@
     <AndroidResource Include="Resources\drawable\icon_feed.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\XFDemoApp.Platform.Droid\XFDemoApp.Platform.Droid.csproj">
+      <Project>{332dacbb-4617-4834-a4cf-5c9c38deb641}</Project>
+      <Name>XFDemoApp.Platform.Droid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\XFDemoApp.Platform\XFDemoApp.Platform.csproj">
+      <Project>{f29d87f4-3920-4bf9-bfd0-1b76f841550d}</Project>
+      <Name>XFDemoApp.Platform</Name>
+    </ProjectReference>
     <ProjectReference Include="..\XFDemoApp\XFDemoApp.csproj">
       <Project>{F7C981CF-9148-48EA-A7E1-B2126F141BCE}</Project>
       <Name>XFDemoApp</Name>

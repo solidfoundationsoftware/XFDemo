@@ -8,22 +8,24 @@
              ios:Page.UseSafeArea="True"
              Title="Listing Detail"
              x:DataType="viewModels:ItemDetailViewModel"
-             BackgroundColor="{StaticResource MainWrapperBackgroundColor}"
-             >
+             BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
 
-    <Grid x:Name="gridContainer"
-         >
+    <Grid x:Name="gridContainer">
         <ScrollView>
             <StackLayout Spacing="0">
-                <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}"
-                      >
+                <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}">
                     <ffimageloading:CachedImage Aspect="AspectFit"
                                                 FadeAnimationEnabled="true"
                                                 Source="{Binding SelectedListing.ListingImageUrl}" />
                 </Grid>
 
+                <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}">
+                    <Image Aspect="AspectFit"
+                           Source="{Binding SelectedListing.ListingImageUrl}" />
+                </Grid>
+
                 <Grid BackgroundColor="White"
-                      Style="{StaticResource ResponsivePaddingStyle}" >
+                      Style="{StaticResource ResponsivePaddingStyle}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
@@ -39,8 +41,7 @@
                     </Button>
 
                     <Grid HorizontalOptions="Center"
-                          VerticalOptions="Center"
-                          >
+                          VerticalOptions="Center">
                         <!--<busyindicator:SfBusyIndicator AnimationType="Cupertino"
                                                        ViewBoxWidth="40"
                                                        ViewBoxHeight="40"
@@ -69,8 +70,7 @@
                                FontSize="{StaticResource SubtitleFontSize}"
                                HorizontalOptions="StartAndExpand"
                                LineBreakMode="WordWrap"
-                               Text="{Binding SelectedListing.ListingTitle}"
-                                />
+                               Text="{Binding SelectedListing.ListingTitle}" />
 
                         <!--  BRAND  -->
                         <!--<Label Grid.Row="1"
@@ -108,5 +108,5 @@
             </StackLayout>
         </ScrollView>
     </Grid>
-    
+
 </ContentPage>

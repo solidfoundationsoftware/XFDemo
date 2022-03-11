@@ -11,6 +11,7 @@
     <None Remove="Resources\Fonts\SourceSansPro-Light.ttf" />
     <None Remove="Resources\Fonts\SourceSansPro-LightItalic.ttf" />
     <None Remove="Resources\Fonts\SourceSansPro-Regular.ttf" />
+    <None Remove="Resources\sample.jpg" />
     <None Remove="Resources\SampleInventory.json" />
   </ItemGroup>
 
@@ -20,11 +21,13 @@
     <EmbeddedResource Include="Resources\Fonts\SourceSansPro-Light.ttf" />
     <EmbeddedResource Include="Resources\Fonts\SourceSansPro-LightItalic.ttf" />
     <EmbeddedResource Include="Resources\Fonts\SourceSansPro-Regular.ttf" />
+    <EmbeddedResource Include="Resources\sample.jpg" />
     <EmbeddedResource Include="Resources\SampleInventory.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.80.3" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />  
@@ -53,5 +56,13 @@
     <EmbeddedResource Update="Views\Templates\ListingItemTemplate.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controls\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\XFDemoApp.Platform\XFDemoApp.Platform.csproj" />
   </ItemGroup>
 </Project>
