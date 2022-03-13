@@ -1,33 +1,56 @@
 ﻿using Android.Content;
 using Android.Graphics;
 using System.ComponentModel;
+using System.IO;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
-using XFDemoApp.Platform;
+using XFDemoApp.Platform.Controls;
 using FastRenderers = Xamarin.Forms.Platform.Android.FastRenderers;
 using XFColor = Xamarin.Forms.Color;
 
-[assembly: ExportRenderer(typeof(ImageText), typeof(XFDemoApp.Platform.Droid.ImageTextRenderer))]
+[assembly: ExportRenderer(typeof(XFDemoApp.Platform.Controls.ImageText), typeof(XFDemoApp.Platform.Droid.Controls.ImageTextRenderer))]
 
-namespace XFDemoApp.Platform.Droid
+namespace XFDemoApp.Platform.Droid.Controls
 {
     public class ImageTextRenderer : FastRenderers.ImageRenderer
     {
-        ImageText visualElement;
+        bool disposed;
 
-        Paint paint = new Paint
+        Paint textBackgroundPaint;
+        Paint dropShadowPaint;
+
+        Bitmap bitmapText;
+        Bitmap bitmapSourceImage;
+        Bitmap bitmapCompositeImage;
+
+        public ImageTextRenderer(Context context) : base(context) { }
+
+        protected override void Dispose(bool disposing)
         {
-            Color = XFColor.FromHex("#FFC51C5D").ToAndroid()
-        };
+            System.Diagnostics.Debug.WriteLine($"\nELEMENT DISPOSE");
 
-        Paint dropShadowPaint = new Paint { Color = XFColor.Black.ToAndroid(), AntiAlias = true };
+            if (disposing && !disposed)
+            {
+                disposed = true;
 
-        Bitmap textBitmap;
+                textBackgroundPaint?.Dispose();
+                textBackgroundPaint = null;
 
-        public ImageTextRenderer(Context context) : base(context)
-        {
+                dropShadowPaint?.Dispose();
+                dropShadowPaint = null;
 
+                bitmapText?.Dispose();
+                bitmapText = null;
+
+                bitmapSourceImage?.Dispose();
+                bitmapSourceImage = null;
+
+                bitmapCompositeImage?.Dispose();
+                bitmapCompositeImage = null;
+            }
+
+            base.Dispose(disposing);
         }
 
         protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<Image> e)
@@ -36,17 +59,19 @@ namespace XFDemoApp.Platform.Droid
 
             if (e.OldElement != null || Element == null)
             {
-                return;
+                System.Diagnostics.Debug.WriteLine($"\nELEMENT DESTROYED");
             }
 
-            visualElement = Element as ImageText;
-
-            if (textBitmap == null)
+            if (e.NewElement != null)
             {
-                UpdateText();                
+                System.Diagnostics.Debug.WriteLine($"\nELEMENT CREATED");
 
+                textBackgroundPaint = new Paint { Color = XFColor.FromHex("#FFC51C5D").ToAndroid() };
+                dropShadowPaint = new Paint { Color = XFColor.Black.ToAndroid(), AntiAlias = true };
                 dropShadowPaint.SetStyle(Paint.Style.Fill);
                 dropShadowPaint.SetShadowLayer(10, -10, 10, XFColor.Black.MultiplyAlpha(0.7).ToAndroid());
+
+                UpdateText();
             }
         }
 
@@ -57,11 +82,15 @@ namespace XFDemoApp.Platform.Droid
             System.Diagnostics.Debug.WriteLine($"\nPROPERTY CHANGED: {e.PropertyName}");
             if (e.PropertyName == Image.IsLoadingProperty.PropertyName)
             {
-                if (!Element.IsLoading) SaveImage();
+                if (!Element.IsLoading)
+                {
+                    UpdateSourceImage();
+                }
             }
             else if (e.PropertyName == ImageText.TextProperty.PropertyName)
             {
                 UpdateText();
+                UpdateCompositeImage();
             }
         }
 
@@ -69,8 +98,10 @@ namespace XFDemoApp.Platform.Droid
         {
             System.Diagnostics.Debug.WriteLine($"\nUPDATE TEXT");
 
-            var text = visualElement.Text;
-            var padding = visualElement.TextPadding;
+            var text = (string)Element.GetValue(ImageText.TextProperty);
+            text = string.IsNullOrEmpty(text) ? "" : text;
+
+            var padding = (int)Element.GetValue(ImageText.TextPaddingProperty);
 
             using (Paint textPaint = new Paint { TextSize = 70, Color = XFColor.White.ToAndroid(), AntiAlias = true })
             {
@@ -78,19 +109,19 @@ namespace XFDemoApp.Platform.Droid
                 var textToMeasure = string.IsNullOrEmpty(text) ? "A" : text;
                 textPaint.GetTextBounds(textToMeasure, 0, textToMeasure.Length, bounds);
 
-                textBitmap = Bitmap.CreateBitmap(bounds.Right + padding, bounds.Height() + padding, Bitmap.Config.Argb8888);
+                bitmapText = Bitmap.CreateBitmap(bounds.Right + padding, bounds.Height() + padding, Bitmap.Config.Argb8888);
 
-                using (Canvas bitmapCanvas = new Canvas(textBitmap))
+                using (Canvas canvas = new Canvas(bitmapText))
                 {
-                    bitmapCanvas.DrawColor(XFColor.FromHex("#FFC51C5D").ToAndroid());
-                    bitmapCanvas.DrawText(text, padding / 2, -bounds.Top + (padding / 2), textPaint);
+                    canvas.DrawColor(XFColor.FromHex("#FFC51C5D").ToAndroid());
+                    canvas.DrawText(text, padding / 2, -bounds.Top + (padding / 2), textPaint);
                 }
             }
 
             Invalidate();
         }
 
-        private async Task SaveImage()
+        private async Task UpdateSourceImage()
         {
             System.Diagnostics.Debug.WriteLine($"\nUPDATE IMAGE");
 
@@ -112,20 +143,42 @@ namespace XFDemoApp.Platform.Droid
 
             if (handler != null)
             {
-                var image = await handler.LoadImageAsync(source, base.Context);
-                System.Diagnostics.Debug.WriteLine($"\nIMAGE: {image.Width}/{image.Height}");
+                bitmapSourceImage = await handler.LoadImageAsync(source, base.Context);
+                System.Diagnostics.Debug.WriteLine($"\nIMAGE: {bitmapSourceImage.Width}/{bitmapSourceImage.Height}");
+
+                UpdateCompositeImage();
             }
         }
 
+        private void UpdateCompositeImage()
+        {
+            if (bitmapSourceImage == null) return;
+            if (bitmapText == null) return;
+
+            bitmapCompositeImage = bitmapSourceImage.Copy(bitmapSourceImage.GetConfig(), true);
+
+            using (Canvas canvas = new Canvas(bitmapCompositeImage))
+            {
+                int left = canvas.Width - bitmapText.Width;
+                canvas.DrawRect(new Android.Graphics.Rect(left, 0, bitmapText.Width + left, bitmapText.Height), dropShadowPaint);
+                canvas.DrawBitmap(bitmapText, canvas.Width - bitmapText.Width, 0, null);
+            }
+
+            using (var stream = new MemoryStream(bitmapCompositeImage.ByteCount))
+            {
+                bitmapCompositeImage.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+                Element.SetValue(ImageText.CompositeImageProperty, stream.ToArray());
+            }
+        }
 
         public override void Draw(Canvas canvas)
         {
             base.Draw(canvas);
-            System.Diagnostics.Debug.WriteLine($"\nDRAW: {canvas.Width}/{canvas.Height}, {textBitmap.Width}/{textBitmap.Height}");
+            System.Diagnostics.Debug.WriteLine($"\nDRAW: {canvas.Width}/{canvas.Height}, {bitmapText.Width}/{bitmapText.Height}");
 
-            int left = canvas.Width - textBitmap.Width;
-            canvas.DrawRect(new Android.Graphics.Rect(left, 0, textBitmap.Width + left, textBitmap.Height), dropShadowPaint);
-            canvas.DrawBitmap(textBitmap, canvas.Width - textBitmap.Width, 0, null);
+            int left = canvas.Width - bitmapText.Width;
+            canvas.DrawRect(new Android.Graphics.Rect(left, 0, bitmapText.Width + left, bitmapText.Height), dropShadowPaint);
+            canvas.DrawBitmap(bitmapText, canvas.Width - bitmapText.Width, 0, null);
         }
     }
 }

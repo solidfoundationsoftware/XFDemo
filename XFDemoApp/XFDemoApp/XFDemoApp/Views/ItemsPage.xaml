@@ -8,7 +8,9 @@
              xmlns:templates="clr-namespace:XFDemoApp.Views.Templates"
              BackgroundColor="{StaticResource MainWrapperBackgroundColor}"
              xmlns:behaviors="clr-namespace:XFDemoApp.Behaviors"
+             xmlns:effects="clr-namespace:XFDemoApp.Platform.Effects;assembly=XFDemoApp.Platform"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:droid="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="True"
              x:DataType="local:ItemsViewModel"
              x:Name="BrowseItemsPage">
@@ -21,7 +23,7 @@
                         <VisualState x:Name="Selected">
                             <VisualState.Setters>
                                 <Setter Property="BackgroundColor"
-                                        Value="Transparent" />
+                                        Value="{StaticResource ComplementColor}" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
@@ -30,56 +32,128 @@
         </Style>
     </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add"
-                     Command="{Binding AddItemCommand}" />
-    </ContentPage.ToolbarItems>
-    <!--
-      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
-      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
-    -->
-    <!--<RefreshView x:DataType="local:ItemsViewModel"
-                 Command="{Binding LoadItemsCommand}"
-                 IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-        
-    </RefreshView>-->
-    <Grid Padding="0,10,0,0">
-        <CollectionView x:Name="ItemsListView"
-                        ItemsSource="{Binding Items}"
-                        HorizontalScrollBarVisibility="Never"
-                        ItemSizingStrategy="MeasureFirstItem"
-                        SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
-                        SelectionMode="Single">
-            <CollectionView.Behaviors>
-                <behaviors:HighlightSelectedItemBehavior />
-            </CollectionView.Behaviors>
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout ItemSpacing="0"
-                                   Orientation="Vertical" />
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <!--<templates:ListingItemTemplate>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--  SEARCH BAR  -->
+        <Grid ColumnSpacing="0"
+              Style="{StaticResource ResponsivePaddingStyle}"
+              BackgroundColor="{StaticResource AccentColor}">
+            <Grid ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="44" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <SearchBar x:Name="searchBar"
+                           FontSize="{StaticResource MediumFontSize}"
+                           CancelButtonColor="White"
+                           IsSpellCheckEnabled="False"
+                           PlaceholderColor="#85ffffff"
+                           Text="{Binding SearchText, Mode=TwoWay}"
+                           SearchCommand="{Binding SearchCommand}"
+                           SearchCommandParameter="{Binding Text, Source={x:Reference searchBar}}"
+                           Style="{StaticResource TranslucidSearchBarStyle}"
+                           TextColor="{DynamicResource InverseTextColor}">
+                    <SearchBar.Effects>
+                        <effects:ApplyAppThemeEffect />
+                    </SearchBar.Effects>
+                    <SearchBar.Keyboard>
+                        <Keyboard x:FactoryMethod="Create">
+                            <x:Arguments>
+                                <KeyboardFlags>None</KeyboardFlags>
+                            </x:Arguments>
+                        </Keyboard>
+                    </SearchBar.Keyboard>
+                </SearchBar>
+
+                <Picker x:Name="pickerSearchOptions"
+                        Margin="0"
+                        Grid.Column="1"
+                        HeightRequest="{StaticResource EntryHeightRequest}"
+                        FontSize="{StaticResource MediumFontSize}"
+                        ItemsSource="{Binding SearchOptions}"
+                        SelectedItem="{Binding SelectedSearchOption, Mode=TwoWay}"
+                        Style="{StaticResource SingleLinePickerStyle}"
+                        HorizontalTextAlignment="Center"
+                        ItemDisplayBinding="{Binding Value}"
+                        TextColor="White">
+                    <Picker.Effects>
+                        <effects:ApplyAppThemeEffect />
+                    </Picker.Effects>
+                </Picker>
+
+                <Label Grid.Row="1"
+                       Grid.Column="0"
+                       HorizontalOptions="Center"
+                       Text="SEARCH BY TITLE"
+                       Padding="1"
+                       TextColor="{StaticResource InverseTextColor}"
+                       FontSize="{StaticResource MicroFontSize}" />
+                
+                <Label Grid.Row="1"
+                       Grid.Column="1"
+                       HorizontalOptions="Center"
+                       Text="SORT BY"
+                       Padding="1"
+                       TextColor="{StaticResource InverseTextColor}"
+                       FontSize="{StaticResource MicroFontSize}" />
+            </Grid>
+        </Grid>
+
+        <!--INVENTORY LIST-->
+        <Grid Grid.Row="1"
+              Padding="10,10,10,0">
+            <RefreshView Command="{Binding LoadItemsCommand}"
+                         IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+
+                <CollectionView x:Name="ItemsListView"
+                                BackgroundColor="Transparent"
+                                ItemsSource="{Binding Items}"
+                                HorizontalScrollBarVisibility="Never"
+                                ItemSizingStrategy="MeasureFirstItem"
+                                SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                                SelectionMode="Single">
+                    <CollectionView.Behaviors>
+                        <behaviors:HighlightSelectedItemBehavior />
+                    </CollectionView.Behaviors>
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout ItemSpacing="10"
+                                           Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <!--<templates:ListingItemTemplate>
                         <templates:ListingItemTemplate.GestureRecognizers>
                             <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                         </templates:ListingItemTemplate.GestureRecognizers>
                     </templates:ListingItemTemplate>-->
-                    <templates:ListingItemTemplate />
-                    <!--<templates:ListingItemTemplate ItemTappedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}" />-->
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <Grid Margin="0"
-                      Padding="15"
-                      RowSpacing="0">
-                    <Label FontSize="{StaticResource MediumFontSize}"
-                           HorizontalOptions="Center"
-                           HorizontalTextAlignment="Center"
-                           Text="{Binding NoDataMessage}"
-                           TextColor="{DynamicResource BrandColor}"
-                           VerticalOptions="Center" />
-                </Grid>
-            </CollectionView.EmptyView>
-        </CollectionView>
+                            <templates:ListingItemTemplate />
+                            <!--<templates:ListingItemTemplate ItemTappedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}" />-->
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Grid Margin="0"
+                              Padding="15"
+                              RowSpacing="0">
+                            <Label FontSize="{StaticResource MediumFontSize}"
+                                   HorizontalOptions="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Text="{Binding NoDataMessage}"
+                                   TextColor="{DynamicResource BrandColor}"
+                                   VerticalOptions="Center" />
+                        </Grid>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
     </Grid>
 </ContentPage>

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XFDemoApp.Platform;
+using XFDemoApp.Platform.Effects;
 
 namespace XFDemoApp.Views.Templates
 {
@@ -32,12 +33,12 @@ namespace XFDemoApp.Views.Templates
             set => SetValue(ItemTappedCommandProperty, value);
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            if (frameContainer.Effects.Count == 0)
-            {
-                frameContainer.Effects.Add(new DropShadowColorEffect { Color = (Color)App.Current.Resources["AccentColor"] });
-            }
-        }
+        //private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        //{
+        //    if (frameContainer.Effects.Count == 0)
+        //    {
+        //        frameContainer.Effects.Add(new DropShadowColorEffect { Color = (Color)App.Current.Resources["AccentColor"] });
+        //    }
+        //}
     }
 }

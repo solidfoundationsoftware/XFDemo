@@ -7,6 +7,7 @@ using System.Reflection;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XFDemoApp.Platform;
+using XFDemoApp.Platform.Effects;
 using XFDemoApp.Views.Templates;
 
 namespace XFDemoApp.Views
@@ -119,6 +120,8 @@ namespace XFDemoApp.Views
                 Debug.WriteLine($"\n{path}");
 
                 System.IO.File.WriteAllBytes(path, data.ToArray());
+
+              
             }
         }
 

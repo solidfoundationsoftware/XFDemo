@@ -46,9 +46,46 @@ namespace XFDemoApp.Services
             return await Task.FromResult(items.FirstOrDefault(s => s.PMListingId == id));
         }
 
-        public async Task<IEnumerable<Listing>> GetItemsAsync(bool forceRefresh = false)
+        public async Task<IEnumerable<Listing>> GetItemsAsync(ListingSortOrder sortKey = ListingSortOrder.None)
         {
-            return await Task.FromResult(items.Take(20));
+            return await Task.FromResult(OrderListings(items, sortKey));
+        }
+
+        public async Task<IEnumerable<Listing>> SearchItemsAsync(string searchTerm, ListingSortOrder sortKey)
+        {
+            IEnumerable<Listing> query = from item in items select item;
+
+            if (!string.IsNullOrEmpty(searchTerm))
+                query = query.Where(s => s.ListingTitle.IndexOf(searchTerm, StringComparison.OrdinalIgnoreCase) >= 0);
+
+            return await Task.FromResult(OrderListings(query, sortKey));
+        }
+
+        private IEnumerable<Listing> OrderListings(IEnumerable<Listing> query, ListingSortOrder sortKey)
+        {
+            if (query == null) return query;
+
+            switch (sortKey)
+            {
+                case ListingSortOrder.None:
+                    break;
+                case ListingSortOrder.TitleAscending:
+                    query = query.OrderBy(p => p.ListingTitle);
+                    break;
+                case ListingSortOrder.TitleDescending:
+                    query = query.OrderByDescending(p => p.ListingTitle);
+                    break;
+                case ListingSortOrder.PriceAscending:
+                    query = query.OrderBy(p => p.ListingPrice);
+                    break;
+                case ListingSortOrder.PriceDescending:
+                    query = query.OrderByDescending(p => p.ListingPrice);
+                    break;
+                default:
+                    break;
+            }
+
+            return query;
         }
     }
 }

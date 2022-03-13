@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
 
-namespace XFDemoApp.Platform
+namespace XFDemoApp.Platform.Controls
 {
     public class ImageText : Image
     {
@@ -21,6 +21,14 @@ namespace XFDemoApp.Platform
         {
             get { return (int)GetValue(TextPaddingProperty); }
             set { SetValue(TextPaddingProperty, value); }
+        }
+
+        public static readonly BindableProperty CompositeImageProperty = BindableProperty.Create(nameof(CompositeImage), typeof(byte[]), typeof(ImageText), null);
+
+        public byte[] CompositeImage
+        {
+            get { return (byte[])GetValue(CompositeImageProperty); }
+            set { SetValue(CompositeImageProperty, value); }
         }
     }
 }

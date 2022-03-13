@@ -2,6 +2,7 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
                     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                     xmlns:local="clr-namespace:XFDemoApp.Theme"
+                    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
                     x:Class="XFDemoApp.Theme.ImplicitStyles">
     <ResourceDictionary.MergedDictionaries>
         <local:Sizes />
@@ -32,30 +33,6 @@
                 Value="Start" />
     </Style>
 
-    <Style TargetType="Button"
-           ApplyToDerivedTypes="true">
-        <Setter Property="FontFamily"
-                Value="Bold" />
-        <Setter Property="FontAttributes"
-                Value="Bold" />
-        <Setter Property="FontSize"
-                Value="{StaticResource DefaultFontSize}" />
-        <Setter Property="CornerRadius"
-                Value="{StaticResource ButtonCornerRadius}" />
-        <Setter Property="BorderWidth"
-                Value="{StaticResource ButtonBorderWith}" />
-        <Setter Property="BorderColor"
-                Value="{StaticResource ButtonBorderColor }" />
-        <Setter Property="HeightRequest"
-                Value="{StaticResource ButtonHeight}" />
-        <Setter Property="Padding"
-                Value="0" />
-        <Setter Property="BackgroundColor"
-                Value="{StaticResource AccentColor}" />
-        <Setter Property="TextColor"
-                Value="{StaticResource ButtonTextColor}" />
-    </Style>
-
     <Style TargetType="NavigationPage"
            ApplyToDerivedTypes="True">
         <Setter Property="BarBackground">
@@ -66,6 +43,15 @@
                               Offset="1.0" />
             </LinearGradientBrush>
         </Setter>
+        <Setter Property="ios:NavigationPage.HideNavigationBarSeparator"
+                Value="True" />
+        
+    </Style>
+
+    <Style TargetType="FlyoutPage"
+           ApplyToDerivedTypes="True">
+        <Setter Property="ios:FlyoutPage.ApplyShadow"
+                Value="False" />
     </Style>
 
     <Style TargetType="Grid">
@@ -77,6 +63,48 @@
 
     <Style TargetType="StackLayout">
         <Setter Property="Spacing"
+                Value="0" />
+    </Style>
+
+    <Style TargetType="Picker"
+           ApplyToDerivedTypes="True">
+        <Setter Property="HeightRequest"
+                Value="{DynamicResource EntryHeightRequest}" />
+        <Setter Property="BackgroundColor"
+                Value="{DynamicResource EntryAndEditorsBackgroundColor}" />
+        <Setter Property="FontFamily"
+                Value="Regular" />
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+        <Setter Property="FontSize"
+                Value="{DynamicResource EditorFontSize}" />
+    </Style>
+
+    <Style TargetType="ActivityIndicator"
+           ApplyToDerivedTypes="true">
+        <Setter Property="Color"
+                Value="{DynamicResource AccentColor}" />
+    </Style>
+
+    <Style TargetType="Entry"
+           ApplyToDerivedTypes="true">
+        <Setter Property="FontFamily"
+                Value="Regular" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="TextColor"
+                Value="{StaticResource TextColor }" />
+        <Setter Property="HorizontalTextAlignment"
+                Value="Start" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource EntryAndEditorsBackgroundColor}" />
+        <Setter Property="HeightRequest"
+                Value="{StaticResource EntryHeightRequest}" />
+    </Style>
+
+    <Style TargetType="Frame"
+           ApplyToDerivedTypes="True">
+        <Setter Property="Padding"
                 Value="0" />
     </Style>
 </ResourceDictionary>

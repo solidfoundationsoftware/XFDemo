@@ -4,7 +4,8 @@
              x:Class="XFDemoApp.Views.AboutPage"
              xmlns:vm="clr-namespace:XFDemoApp.ViewModels"
              xmlns:skiasharp="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
-             xmlns:controls="clr-namespace:XFDemoApp.Platform;assembly=XFDemoApp.Platform"
+             xmlns:controls="clr-namespace:XFDemoApp.Platform.Controls;assembly=XFDemoApp.Platform"
+             xmlns:effects="clr-namespace:XFDemoApp.Platform.Effects;assembly=XFDemoApp.Platform"
              xmlns:templates="clr-namespace:XFDemoApp.Views.Templates"
              Title="{Binding Title}">
     
@@ -54,16 +55,10 @@
                    IsVisible="False"
                    Grid.Row="1">
                 <Frame.Effects>
-                    <controls:DropShadowColorEffect Color="{StaticResource AccentColor}" />
+                    <effects:DropShadowColorEffect Color="{StaticResource AccentColor}" />
                 </Frame.Effects>
             </Frame>
 
-            <templates:ListingItemTemplate Grid.Row="1"
-                                          >
-                <templates:ListingItemTemplate.Effects>
-                    <controls:DropShadowColorEffect Color="{StaticResource AccentColor}" />
-                </templates:ListingItemTemplate.Effects>
-            </templates:ListingItemTemplate>
         </Grid>
         <!--<Button Text="SAVE PHOTO"
                 Clicked="Button_Clicked"

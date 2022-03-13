@@ -5,4 +5,5 @@
                     x:Class="XFDemoApp.Theme.Converters">
 
     <converters:MaxHeightConverter x:Key="MaxHeightConverter" />
+    <converters:BoolTrueToStringConverter x:Key="BoolTrueToStringConverter" />
 </ResourceDictionary>

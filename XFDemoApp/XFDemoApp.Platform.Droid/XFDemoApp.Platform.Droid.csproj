@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Controls\ImageTextRenderer.cs" />
     <Compile Include="Effects\DropShadowColorEffect.cs" />
+    <Compile Include="Effects\ApplyAppThemeEffect.cs" />
+    <Compile Include="Effects\RoundedCornerOutlineProvider.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

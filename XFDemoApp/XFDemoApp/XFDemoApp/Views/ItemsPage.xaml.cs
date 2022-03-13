@@ -9,6 +9,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XFDemoApp.Models;
 using XFDemoApp.Platform;
+using XFDemoApp.Platform.Effects;
 using XFDemoApp.ViewModels;
 using XFDemoApp.Views;
 using XFDemoApp.Views.Templates;
@@ -48,6 +49,11 @@ namespace XFDemoApp.Views
                     listingItem.Effects.Add(new DropShadowColorEffect { Color = Color.Red });
                 }
             }
+        }
+
+        private void pickerSearchOptions_Unfocused(object sender, FocusEventArgs e)
+        {
+
         }
     }
 }

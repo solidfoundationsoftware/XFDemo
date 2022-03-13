@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -20,6 +21,8 @@ namespace XFDemoApp.ViewModels
         public Command AddItemCommand { get; }
         public Command<Listing> ItemTapped { get; }
 
+        public Command<string> SearchCommand { get; }
+
         public ItemsViewModel()
         {
             Title = "Inventory";
@@ -29,6 +32,29 @@ namespace XFDemoApp.ViewModels
             ItemTapped = new Command<Listing>(OnItemSelected);
 
             AddItemCommand = new Command(OnAddItem);
+
+            SearchCommand = new Command<string>(async p => await ExecuteSearchCommand(p));
+
+            SearchOptions.Add(new PickerOption<ListingSortOrder>(ListingSortOrder.None, "None"));
+            SearchOptions.Add(new PickerOption<ListingSortOrder>(ListingSortOrder.TitleAscending, "Title Asc"));
+            SearchOptions.Add(new PickerOption<ListingSortOrder>(ListingSortOrder.TitleDescending, "Title Desc"));
+            SearchOptions.Add(new PickerOption<ListingSortOrder>(ListingSortOrder.PriceAscending, "Price Asc"));
+            SearchOptions.Add(new PickerOption<ListingSortOrder>(ListingSortOrder.PriceDescending, "Price Desc"));
+
+            selectedSearchOption = SearchOptions[0];
+        }
+
+        private void PopulateListings(IEnumerable<Listing> listings)
+        {
+            Items.Clear();
+
+            if (listings != null)
+            {
+                foreach (Listing listing in listings)
+                {
+                    Items.Add(listing);
+                }
+            }
         }
 
         async Task ExecuteLoadItemsCommand()
@@ -37,12 +63,27 @@ namespace XFDemoApp.ViewModels
 
             try
             {
-                Items.Clear();
-                var items = await DataStore.GetItemsAsync(true);
-                foreach (var item in items)
-                {
-                    Items.Add(item);
-                }
+                PopulateListings(await DataStore.GetItemsAsync(SelectedSearchOption?.Key ?? ListingSortOrder.None));
+                SearchText = String.Empty;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        async Task ExecuteSearchCommand(string searchTerm)
+        {
+            IsBusy = true;
+
+            try
+            {
+                SearchText = searchTerm;
+                PopulateListings(await DataStore.SearchItemsAsync(searchTerm, SelectedSearchOption?.Key ?? ListingSortOrder.None));
             }
             catch (Exception ex)
             {
@@ -59,6 +100,10 @@ namespace XFDemoApp.ViewModels
             if (SelectedItem == null)
             {
                 await ExecuteLoadItemsCommand();
+            }
+            else
+            {
+                SelectedItem = null;
             }
         }
 
@@ -93,6 +138,24 @@ namespace XFDemoApp.ViewModels
             set
             {
                 SetProperty(ref noDataMessage, value);
+            }
+        }
+
+        private string searchText;
+        public string SearchText { get => searchText; set => SetProperty(ref searchText, value); }
+
+        public ObservableCollection<PickerOption<ListingSortOrder>> SearchOptions { get; } = new ObservableCollection<PickerOption<ListingSortOrder>>();
+
+        private PickerOption<ListingSortOrder> selectedSearchOption;
+        public PickerOption<ListingSortOrder> SelectedSearchOption 
+        { 
+            get => selectedSearchOption;
+            set
+            {
+                if (SetProperty(ref selectedSearchOption, value))
+                {
+                    ExecuteSearchCommand(SearchText);
+                }
             }
         }
     }

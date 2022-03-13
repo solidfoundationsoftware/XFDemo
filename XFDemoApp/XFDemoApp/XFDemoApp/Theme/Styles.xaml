@@ -16,7 +16,44 @@
                 Value="Bold" />
     </Style>
 
+    <Style x:Key="DefaultSpanStyle"
+           ApplyToDerivedTypes="true"
+           TargetType="Span">
+        <Setter Property="FontFamily"
+                Value="Regular" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="TextColor"
+                Value="{DynamicResource TextColor}" />
+    </Style>
+
+    <Style x:Key="DefaultButtonStyle"
+           ApplyToDerivedTypes="True"
+           TargetType="Button">
+        <Setter Property="FontFamily"
+                Value="Bold" />
+        <Setter Property="FontAttributes"
+                Value="Bold" />
+        <Setter Property="FontSize"
+                Value="{StaticResource DefaultFontSize}" />
+        <Setter Property="CornerRadius"
+                Value="{StaticResource ButtonCornerRadius}" />
+        <Setter Property="BorderWidth"
+                Value="{StaticResource ButtonBorderWith}" />
+        <Setter Property="BorderColor"
+                Value="{StaticResource ButtonBorderColor }" />
+        <Setter Property="HeightRequest"
+                Value="{StaticResource ButtonHeight}" />
+        <Setter Property="Padding"
+                Value="0" />
+        <Setter Property="BackgroundColor"
+                Value="{StaticResource AccentColor}" />
+        <Setter Property="TextColor"
+                Value="{StaticResource ButtonTextColor}" />
+    </Style>
+
     <Style x:Key="PrimaryButtonStyle"
+           BasedOn="{StaticResource DefaultButtonStyle}"
            TargetType="Button"
            ApplyToDerivedTypes="True">
         <Setter Property="BackgroundColor"
@@ -42,4 +79,26 @@
         <Setter Property="Padding"
                 Value="{OnIdiom Default='15,15,15,15', Tablet='60,20,60,20'}" />
     </Style>
+
+    <Style x:Key="TranslucidSearchBarStyle"
+           TargetType="SearchBar">
+        <Setter Property="TextColor"
+                Value="{DynamicResource InverseTextColor}" />
+        <Setter Property="PlaceholderColor"
+                Value="{DynamicResource InverseTextColor}" />
+        <Setter Property="BackgroundColor"
+                Value="{DynamicResource TranslucidWhiteInput}" />        
+    </Style>
+
+    <Style x:Key="SingleLinePickerStyle"
+           ApplyToDerivedTypes="true"
+           TargetType="Picker">
+        <Setter Property="TextColor"
+                Value="{DynamicResource AccentColor}" />
+        <Setter Property="BackgroundColor"
+                Value="{DynamicResource TranslucidWhiteInput}" />
+    </Style>
+
+    
+
 </ResourceDictionary>

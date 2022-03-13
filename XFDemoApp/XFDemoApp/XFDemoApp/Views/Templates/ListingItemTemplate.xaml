@@ -7,22 +7,18 @@
              x:Class="XFDemoApp.Views.Templates.ListingItemTemplate"
              xmlns:platform="clr-namespace:XFDemoApp.Platform;assembly=XFDemoApp.Platform"
              x:Name="Self"
-             Padding="10,5,10,15"
-             >
-    <ContentView.GestureRecognizers>
+             Padding="2">
+    <!--<ContentView.GestureRecognizers>
         <TapGestureRecognizer NumberOfTapsRequired="1"
                               Tapped="TapGestureRecognizer_Tapped"
                               Command="{Binding Source={x:Reference Self}, Path=ItemTappedCommand}"
                               CommandParameter="{Binding .}">
         </TapGestureRecognizer>
-    </ContentView.GestureRecognizers>
+    </ContentView.GestureRecognizers>-->
     <ContentView.Content>
-        <Frame HasShadow="False"
-               Padding="0"
-               x:Name="frameContainer"
-               InputTransparent="True"
-               CascadeInputTransparent="True"
-               BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
+        <Grid InputTransparent="True"
+              CascadeInputTransparent="True"
+              BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
             <!--<Frame.Effects>
                 <platform:DropShadowColorEffect Color="{StaticResource AccentColor}" />
             </Frame.Effects>-->
@@ -90,36 +86,20 @@
                                                     Source="{Binding ListingImageUrl}" />
                     </Grid>
 
-                    <!--LISTING DETAILS-->
-                    <Grid RowSpacing="1"
-                          Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <!--MESSAGE-->
-                        <Label Grid.Row="0"
-                               Padding="7,10"
-                               BackgroundColor="{DynamicResource LightBackgroundColor}"
-                               HorizontalOptions="Fill"
-                               VerticalOptions="Fill"
-                               LineBreakMode="WordWrap"
-                               FontSize="{StaticResource MediumFontSize}"
-                               Text="{Binding OfferToLikersMessage}">
-                        </Label>
-                        <Label Grid.Row="1"
-                               Padding="7,10"
-                               BackgroundColor="{DynamicResource LightBackgroundColor}"
-                               HorizontalOptions="Fill"
-                               VerticalOptions="Fill"
-                               LineBreakMode="WordWrap"
-                               FontSize="{StaticResource MediumFontSize}"
-                               Text="">
-                        </Label>
-                    </Grid>
+                    <!--MESSAGE-->
+                    <Label Grid.Column="1"
+                           Padding="7,10"
+                           BackgroundColor="{DynamicResource LightBackgroundColor}"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Fill"
+                           LineBreakMode="WordWrap"
+                           HorizontalTextAlignment="Center"
+                           VerticalTextAlignment="Center"
+                           FontSize="{StaticResource MediumFontSize}"
+                           Text="{Binding OfferToLikersMessage}">
+                    </Label>
                 </Grid>
             </Grid>
-        </Frame>
+        </Grid>
     </ContentView.Content>
 </ContentView>

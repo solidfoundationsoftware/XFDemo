@@ -5,9 +5,9 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportEffect(typeof(XFDemoApp.Platform.Droid.DropShadowColorEffect), nameof(XFDemoApp.Platform.DropShadowColorEffect))]
+[assembly: ExportEffect(typeof(XFDemoApp.Platform.Droid.Effects.DropShadowColorEffect), nameof(XFDemoApp.Platform.Effects.DropShadowColorEffect))]
 
-namespace XFDemoApp.Platform.Droid
+namespace XFDemoApp.Platform.Droid.Effects
 {
     public class DropShadowColorEffect : PlatformEffect
     {
@@ -29,7 +29,7 @@ namespace XFDemoApp.Platform.Droid
                 System.Diagnostics.Debug.WriteLine(Resource.Color.cardview_shadow_start_color);
                 System.Diagnostics.Debug.WriteLine(Resource.Attribute.cardElevation);
 
-                var effect = (XFDemoApp.Platform.DropShadowColorEffect)Element.Effects.FirstOrDefault(e => e is XFDemoApp.Platform.DropShadowColorEffect);
+                var effect = (XFDemoApp.Platform.Effects.DropShadowColorEffect)Element.Effects.FirstOrDefault(e => e is XFDemoApp.Platform.Effects.DropShadowColorEffect);
                 if (effect != null)
                 {
                     radius = effect.Radius;

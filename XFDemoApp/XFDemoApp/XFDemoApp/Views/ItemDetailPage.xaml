@@ -2,8 +2,10 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="XFDemoApp.Views.ItemDetailPage"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:viewModels="clr-namespace:XFDemoApp.ViewModels"
+             xmlns:controls="clr-namespace:XFDemoApp.Platform.Controls;assembly=XFDemoApp.Platform"
+             xmlns:effects="clr-namespace:XFDemoApp.Platform.Effects;assembly=XFDemoApp.Platform"
+             xmlns:behaviors="clr-namespace:XFDemoApp.Behaviors"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="True"
              Title="Listing Detail"
@@ -12,33 +14,105 @@
 
     <Grid x:Name="gridContainer">
         <ScrollView>
-            <StackLayout Spacing="0">
+            <StackLayout>
                 <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}">
-                    <ffimageloading:CachedImage Aspect="AspectFit"
-                                                FadeAnimationEnabled="true"
-                                                Source="{Binding SelectedListing.ListingImageUrl}" />
+                    <controls:ImageText x:Name="imagePromoText"
+                                        Aspect="AspectFit"
+                                        Text="{Binding Source={x:Reference textPromo}, Path=Text}"
+                                        Source="{Binding SelectedListing.ListingImageUrl}" />
                 </Grid>
 
-                <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}">
-                    <Image Aspect="AspectFit"
-                           Source="{Binding SelectedListing.ListingImageUrl}" />
-                </Grid>
-
-                <Grid BackgroundColor="White"
-                      Style="{StaticResource ResponsivePaddingStyle}">
+                <Grid RowSpacing="5"
+                      Style="{StaticResource ResponsivePaddingStyle}"
+                      BackgroundColor="{StaticResource AccentColor}">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
+                    <Grid ColumnSpacing="15">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Label Text="PRICE"
+                               Padding="1"
+                               Grid.Column="0"
+                               Style="{StaticResource LabelBoldStyle}"
+                               TextColor="{StaticResource InverseTextColor}"
+                               FontSize="{StaticResource DefaultFontSize}" />
+
+                        <Entry Grid.Row="1"
+                               Grid.Column="0"
+                               BackgroundColor="{StaticResource TranslucidBlack}"
+                               FontSize="{StaticResource LargeFontSize}"
+                               MaxLength="10"
+                               TextColor="White"
+                               IsReadOnly="True"
+                               HorizontalTextAlignment="Center"
+                               Text="{Binding SelectedListing.ListingPrice, StringFormat='{0:C0}'}">
+                            <Entry.Effects>
+                                <effects:ApplyAppThemeEffect />
+                            </Entry.Effects>
+                        </Entry>
+
+                        <Label Text="PROMO TEXT"
+                               Padding="1"
+                               Grid.Column="1"
+                               Style="{StaticResource LabelBoldStyle}"
+                               TextColor="{StaticResource InverseTextColor}"
+                               FontSize="{StaticResource DefaultFontSize}" />
+
+                        <Frame Grid.Row="1"
+                               Grid.Column="1"
+                               HasShadow="False"
+                               BackgroundColor="{StaticResource AccentColor}">
+                            <Entry x:Name="textPromo"
+                                   Placeholder="enter promo text"
+                                   BackgroundColor="{StaticResource TranslucidWhiteInput}"
+                                   FontSize="{StaticResource LargeFontSize}"
+                                   MaxLength="10"
+                                   HorizontalTextAlignment="Center"
+                                   TextColor="{StaticResource LightBackgroundColor}"
+                                   Text="3/$25">
+                                <Entry.Effects>
+                                    <effects:ApplyAppThemeEffect />
+                                </Entry.Effects>
+                                <Entry.Behaviors>
+                                    <behaviors:HighlightEntryOnFocusBehavior HighlightColor="{StaticResource ComplementColor}" />
+                                </Entry.Behaviors>
+                            </Entry>
+                        </Frame>
+                        
+
+                    </Grid>
+                    
+
                     <Button Style="{StaticResource PrimaryButtonStyle}"
-                            FontAttributes="Bold"
                             x:Name="buttonSaveImages"
                             HorizontalOptions="Fill"
                             Text="SAVE PHOTO"
                             VerticalOptions="Start"
-                            WidthRequest="200">
+                            Grid.Row="2"
+                            Margin="0,10,0,0"
+                            Clicked="buttonSaveImages_Clicked">
                     </Button>
+                </Grid>
+
+                <Grid BackgroundColor="{StaticResource LightBackgroundColor}"
+                      Style="{StaticResource ResponsivePaddingStyle}"
+                      IsVisible="False"
+                      Margin="0,2,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
                     <Grid HorizontalOptions="Center"
                           VerticalOptions="Center">
