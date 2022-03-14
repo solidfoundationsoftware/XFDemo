@@ -35,8 +35,6 @@ namespace XFDemoApp.Platform.iOS.Controls
 
         protected override void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine($"\nELEMENT DISPOSE");
-
             if (disposing && !disposed)
             {
                 disposed = true;
@@ -77,8 +75,6 @@ namespace XFDemoApp.Platform.iOS.Controls
         {
             base.OnElementPropertyChanged(sender, e);
 
-            System.Diagnostics.Debug.WriteLine($"\nPROPERTY CHANGED: {e.PropertyName}");
-
             if (e.PropertyName == Image.SourceProperty.PropertyName)
             {
                 await ImageElementManager.SetImage(this, Element).ConfigureAwait(false);
@@ -98,8 +94,6 @@ namespace XFDemoApp.Platform.iOS.Controls
 
         private void UpdateCompositeImage()
         {
-            System.Diagnostics.Debug.WriteLine($"\nUPDATE COMPOSITE IMAGE");
-
             if (sourceImage == null) return;
 
             var text = (string)Element.GetValue(ImageText.TextProperty) ?? "";

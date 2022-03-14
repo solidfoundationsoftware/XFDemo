@@ -5,23 +5,12 @@
              xmlns:models="clr-namespace:XFDemoApp.Models"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="XFDemoApp.Views.Templates.ListingItemTemplate"
-             xmlns:platform="clr-namespace:XFDemoApp.Platform;assembly=XFDemoApp.Platform"
              x:Name="Self"
              Padding="2">
-    <!--<ContentView.GestureRecognizers>
-        <TapGestureRecognizer NumberOfTapsRequired="1"
-                              Tapped="TapGestureRecognizer_Tapped"
-                              Command="{Binding Source={x:Reference Self}, Path=ItemTappedCommand}"
-                              CommandParameter="{Binding .}">
-        </TapGestureRecognizer>
-    </ContentView.GestureRecognizers>-->
     <ContentView.Content>
         <Grid InputTransparent="True"
               CascadeInputTransparent="True"
               BackgroundColor="{StaticResource MainWrapperBackgroundColor}">
-            <!--<Frame.Effects>
-                <platform:DropShadowColorEffect Color="{StaticResource AccentColor}" />
-            </Frame.Effects>-->
             <Grid RowSpacing="1"
                   ColumnSpacing="1"
                   x:DataType="models:Listing">

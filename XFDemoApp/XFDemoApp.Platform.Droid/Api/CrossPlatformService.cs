@@ -14,9 +14,9 @@ namespace XFDemoApp.Platform.Droid.Api
     {
         public async Task<APIResult> SaveImageToPhotoAlbumAsync(string albumName, string imageFileName, byte[] image)
         {
-            if (string.IsNullOrEmpty(albumName)) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING));
-            if (string.IsNullOrEmpty(imageFileName)) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_IMAGE_FILE_NAME_MISSING));
-            if (image == null || image.Length == 0) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_IMAGE_DATA_MISSING));
+            if (string.IsNullOrEmpty(albumName)) return new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING);
+            if (string.IsNullOrEmpty(imageFileName)) return new APIResult(false, APIConstants.ERROR_IMAGE_FILE_NAME_MISSING);
+            if (image == null || image.Length == 0) return new APIResult(false, APIConstants.ERROR_IMAGE_DATA_MISSING);
 
             var saveImageError = string.Empty;
             var saveImageResult = false;
@@ -25,8 +25,8 @@ namespace XFDemoApp.Platform.Droid.Api
             {
                 // We only need the permission when accessing the file, but it's more natural
                 // to ask the user first, then show the picker.
-                if (await Permissions.RequestAsync<Permissions.StorageWrite>() != PermissionStatus.Granted) 
-                    return await Task.FromResult(new APIResult(false, APIConstants.ERROR_ACCESS_PHOTO_DENIED));
+                if (await new Permissions.StorageWrite().CheckAndRequestPermissionAsync() != PermissionStatus.Granted) 
+                    return new APIResult(false, APIConstants.ERROR_ACCESS_PHOTO_DENIED);
 
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Q)
                 {

@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
-
 using XFDemoApp.Models;
 using XFDemoApp.Views;
 
@@ -18,8 +16,6 @@ namespace XFDemoApp.ViewModels
 
         public ObservableCollection<Listing> Items { get; }
         public Command LoadItemsCommand { get; }
-        public Command AddItemCommand { get; }
-        public Command<Listing> ItemTapped { get; }
 
         public Command<string> SearchCommand { get; }
 
@@ -28,10 +24,6 @@ namespace XFDemoApp.ViewModels
             Title = "Inventory";
             Items = new ObservableCollection<Listing>();
             LoadItemsCommand = new Command(async () => await ExecuteLoadItemsCommand());
-
-            ItemTapped = new Command<Listing>(OnItemSelected);
-
-            AddItemCommand = new Command(OnAddItem);
 
             SearchCommand = new Command<string>(async p => await ExecuteSearchCommand(p));
 
@@ -117,17 +109,11 @@ namespace XFDemoApp.ViewModels
             }
         }
 
-        private async void OnAddItem(object obj)
-        {
-            await Shell.Current.GoToAsync(nameof(NewItemPage));
-        }
-
         async void OnItemSelected(Listing item)
         {
             if (item == null)
                 return;
 
-            // This will push the ItemDetailPage onto the navigation stack
             await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemId)}={item.PMListingId}");
         }
 

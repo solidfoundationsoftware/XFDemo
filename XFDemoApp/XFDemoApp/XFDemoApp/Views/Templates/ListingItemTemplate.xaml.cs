@@ -18,27 +18,5 @@ namespace XFDemoApp.Views.Templates
         {
             InitializeComponent();
         }
-
-        public static readonly BindableProperty ItemTappedCommandProperty = BindableProperty.Create
-            (
-                nameof(ItemTappedCommand),
-                typeof(ICommand),
-                typeof(ListingItemTemplate),
-                null
-            );
-
-        public ICommand ItemTappedCommand
-        {
-            get => (ICommand)GetValue(ItemTappedCommandProperty);
-            set => SetValue(ItemTappedCommandProperty, value);
-        }
-
-        //private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        //{
-        //    if (frameContainer.Effects.Count == 0)
-        //    {
-        //        frameContainer.Effects.Add(new DropShadowColorEffect { Color = (Color)App.Current.Resources["AccentColor"] });
-        //    }
-        //}
     }
 }

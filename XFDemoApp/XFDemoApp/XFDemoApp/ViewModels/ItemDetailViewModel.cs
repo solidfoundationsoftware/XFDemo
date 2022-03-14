@@ -10,7 +10,6 @@ namespace XFDemoApp.ViewModels
     [QueryProperty(nameof(ItemId), nameof(ItemId))]
     public class ItemDetailViewModel : BaseViewModel
     {
-
         public ItemDetailViewModel()
         {
             savePromoPhotoCommand = new Command<byte[]>(async (image) => await SavePromoPhoto(image), (p) => !SavePromoPhotoInProgress);

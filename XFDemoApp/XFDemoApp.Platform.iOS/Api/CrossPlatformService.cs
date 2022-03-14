@@ -2,6 +2,7 @@
 using Photos;
 using System;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using XFDemoApp.Platform.Api;
 
 [assembly: Xamarin.Forms.Dependency(typeof(XFDemoApp.Platform.iOS.Api.CrossPlatformService))]
@@ -12,12 +13,17 @@ namespace XFDemoApp.Platform.iOS.Api
     {
         public async Task<APIResult> SaveImageToPhotoAlbumAsync(string albumName, string imageFileName, byte[] image)
         {
-            if (string.IsNullOrEmpty(albumName)) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING));
-            if (string.IsNullOrEmpty(imageFileName)) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_IMAGE_FILE_NAME_MISSING));
-            if (image == null || image.Length == 0) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_IMAGE_DATA_MISSING));
+            if (string.IsNullOrEmpty(albumName)) return new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING);
+            if (string.IsNullOrEmpty(imageFileName)) return new APIResult(false, APIConstants.ERROR_IMAGE_FILE_NAME_MISSING);
+            if (image == null || image.Length == 0) return new APIResult(false, APIConstants.ERROR_IMAGE_DATA_MISSING);
 
             bool savingAllowed = true;
             var source = new TaskCompletionSource<APIResult>();
+
+            if (await new Permissions.Photos().CheckAndRequestPermissionAsync() != PermissionStatus.Granted)
+            {
+                return new APIResult(false, APIConstants.ERROR_ACCESS_PHOTO_DENIED);
+            }
 
             var tempAlbum = GetPhotoAlbum(albumName);
 
@@ -60,12 +66,13 @@ namespace XFDemoApp.Platform.iOS.Api
                     });
             }
 
-            return await source.Task;
+            var result = await source.Task;
+            return result;
         }
 
         private async Task<APIResult> CreatePhotoAlbum(string albumName)
         {
-            if (string.IsNullOrEmpty(albumName)) return await Task.FromResult(new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING));
+            if (string.IsNullOrEmpty(albumName)) return new APIResult(false, APIConstants.ERROR_ALBUM_NAME_MISSING);
 
             var source = new TaskCompletionSource<APIResult>();
 
@@ -78,7 +85,8 @@ namespace XFDemoApp.Platform.iOS.Api
                 source.TrySetResult(new APIResult(success, error?.LocalizedDescription));
             });
 
-            return await source.Task;
+            var result = await source.Task;
+            return result;
         }
 
         private PHAssetCollection GetPhotoAlbum(string albumName)

@@ -22,7 +22,6 @@
                                         Text="{Binding Source={x:Reference textPromo}, Path=Text}"
                                          />
                 </Grid>
-                <!--Source="{Binding SelectedListing.ListingImageUrl}"-->
                 <Grid RowSpacing="5"
                       Style="{StaticResource ResponsivePaddingStyle}"
                       BackgroundColor="{StaticResource AccentColor}">
@@ -57,7 +56,7 @@
                                TextColor="White"
                                IsReadOnly="True"
                                HorizontalTextAlignment="Center"
-                               Text="{Binding SelectedListing.ListingPrice, StringFormat='{0:C0}'}">
+                               Text="{Binding SelectedListing.ListingPrice, StringFormat='{0:C0}', Mode=OneWay}">
                             <Entry.Effects>
                                 <effects:ApplyAppThemeEffect />
                             </Entry.Effects>
@@ -90,8 +89,6 @@
                                 </Entry.Behaviors>
                             </Entry>
                         </Frame>
-                        
-
                     </Grid>
                     
                     <Button Style="{StaticResource PrimaryButtonStyle}"
@@ -103,28 +100,6 @@
                             Command="{Binding SavePromoPhotoCommand}"
                             CommandParameter="{Binding Source={x:Reference imagePromoText}, Path=CompositeImage}">
                     </Button>
-                </Grid>
-
-                <Grid BackgroundColor="{StaticResource LightBackgroundColor}"
-                      Style="{StaticResource ResponsivePaddingStyle}"
-                      IsVisible="False"
-                      Margin="0,2,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Grid HorizontalOptions="Center"
-                          VerticalOptions="Center">
-                        <!--<busyindicator:SfBusyIndicator AnimationType="Cupertino"
-                                                       ViewBoxWidth="40"
-                                                       ViewBoxHeight="40"
-                                                       HeightRequest="40"
-                                                       WidthRequest="40"
-                                                       VerticalOptions="Center"
-                                                       TextColor="{DynamicResource AccentColor}"
-                                                       IsBusy="{Binding Source={x:Reference buttonSaveImages}, Path=IsEnabled, Converter={StaticResource NegateBooleanConverter}}" />-->
-                    </Grid>
                 </Grid>
 
                 <StackLayout Spacing="0"
@@ -145,38 +120,6 @@
                                HorizontalOptions="StartAndExpand"
                                LineBreakMode="WordWrap"
                                Text="{Binding SelectedListing.ListingTitle}" />
-
-                        <!--  BRAND  -->
-                        <!--<Label Grid.Row="1"
-                               Grid.Column="0"
-                               Margin="0,5,0,0"
-                               HorizontalOptions="End"
-                               HorizontalTextAlignment="End">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <FormattedString.Spans>
-                                        <Span FontSize="{StaticResource MicroFontSize}"
-                                              Text="by " />
-                                        <Span FontAttributes="Bold"
-                                              FontSize="{StaticResource LargeFontSize}"
-                                              Text="{Binding InventoryDetail.Brand, StringFormat='{0}'}"
-                                              TextColor="{DynamicResource AccentColor}" />
-                                    </FormattedString.Spans>
-                                </FormattedString>
-                            </Label.FormattedText>
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="ButtonBrand_Clicked" />
-                            </Label.GestureRecognizers>
-                        </Label>-->
-
-                        <!--  DESCRIPTION  -->
-                        <!--<Label Grid.Row="2"
-                               Margin="0,20,0,10"
-                               FontSize="{StaticResource MediumFontSize}"
-                               HorizontalOptions="Start"
-                               IsVisible="{Binding PoshmarkIntegrationEnabled, FallbackValue=False}"
-                               Text="{Binding InventoryDetail.Description}"
-                               TextColor="{DynamicResource BaseTextColor}" />-->
                     </Grid>
                 </StackLayout>
             </StackLayout>

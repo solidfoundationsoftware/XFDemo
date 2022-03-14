@@ -28,8 +28,6 @@ namespace XFDemoApp.Platform.Droid.Controls
 
         protected override void Dispose(bool disposing)
         {
-            System.Diagnostics.Debug.WriteLine($"\nELEMENT DISPOSE");
-
             if (disposing && !disposed)
             {
                 disposed = true;
@@ -57,15 +55,8 @@ namespace XFDemoApp.Platform.Droid.Controls
         {
             base.OnElementChanged(e);
 
-            if (e.OldElement != null || Element == null)
-            {
-                System.Diagnostics.Debug.WriteLine($"\nELEMENT DESTROYED");
-            }
-
             if (e.NewElement != null)
             {
-                System.Diagnostics.Debug.WriteLine($"\nELEMENT CREATED");
-
                 textBackgroundPaint = new Paint { Color = XFColor.FromHex("#FFC51C5D").ToAndroid() };
                 dropShadowPaint = new Paint { Color = XFColor.Black.ToAndroid(), AntiAlias = true };
                 dropShadowPaint.SetStyle(Paint.Style.Fill);
@@ -75,16 +66,15 @@ namespace XFDemoApp.Platform.Droid.Controls
             }
         }
 
-        protected override void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected override async void OnElementPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             base.OnElementPropertyChanged(sender, e);
 
-            System.Diagnostics.Debug.WriteLine($"\nPROPERTY CHANGED: {e.PropertyName}");
             if (e.PropertyName == Image.IsLoadingProperty.PropertyName)
             {
                 if (!Element.IsLoading)
                 {
-                    _ = UpdateSourceImage();
+                    await UpdateSourceImage();
                 }
             }
             else if (e.PropertyName == ImageText.TextProperty.PropertyName)
@@ -96,8 +86,6 @@ namespace XFDemoApp.Platform.Droid.Controls
 
         private void UpdateText()
         {
-            System.Diagnostics.Debug.WriteLine($"\nUPDATE TEXT");
-
             var text = (string)Element.GetValue(ImageText.TextProperty);
             text = string.IsNullOrEmpty(text) ? "" : text;
 
@@ -123,8 +111,6 @@ namespace XFDemoApp.Platform.Droid.Controls
 
         private async Task UpdateSourceImage()
         {
-            System.Diagnostics.Debug.WriteLine($"\nUPDATE IMAGE");
-
             var source = Element.Source;
             IImageSourceHandler handler = null;
 
@@ -144,8 +130,6 @@ namespace XFDemoApp.Platform.Droid.Controls
             if (handler != null)
             {
                 bitmapSourceImage = await handler.LoadImageAsync(source, base.Context);
-                System.Diagnostics.Debug.WriteLine($"\nIMAGE: {bitmapSourceImage.Width}/{bitmapSourceImage.Height}");
-
                 UpdateCompositeImage();
             }
         }
@@ -174,7 +158,6 @@ namespace XFDemoApp.Platform.Droid.Controls
         public override void Draw(Canvas canvas)
         {
             base.Draw(canvas);
-            System.Diagnostics.Debug.WriteLine($"\nDRAW: {canvas.Width}/{canvas.Height}, {bitmapText.Width}/{bitmapText.Height}");
 
             int left = canvas.Width - bitmapText.Width;
             canvas.DrawRect(new Android.Graphics.Rect(left, 0, bitmapText.Width + left, bitmapText.Height), dropShadowPaint);

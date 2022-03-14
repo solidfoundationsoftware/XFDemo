@@ -8,7 +8,5 @@ namespace XFDemoApp.Platform.Effects
     public class ApplyAppThemeEffect : RoutingEffect
     {
         public ApplyAppThemeEffect() : base($"{nameof(XFDemoApp)}.{nameof(ApplyAppThemeEffect)}") { }
-
-        
     }
 }
