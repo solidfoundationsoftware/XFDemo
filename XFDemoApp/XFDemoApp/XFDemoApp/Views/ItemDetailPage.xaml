@@ -18,10 +18,11 @@
                 <Grid HeightRequest="{Binding Source={x:Reference gridContainer}, Path=Width, Converter={StaticResource MaxHeightConverter}, ConverterParameter=580}">
                     <controls:ImageText x:Name="imagePromoText"
                                         Aspect="AspectFit"
+                                        Source="{Binding SelectedListing.ListingImageUrl}"
                                         Text="{Binding Source={x:Reference textPromo}, Path=Text}"
-                                        Source="{Binding SelectedListing.ListingImageUrl}" />
+                                         />
                 </Grid>
-
+                <!--Source="{Binding SelectedListing.ListingImageUrl}"-->
                 <Grid RowSpacing="5"
                       Style="{StaticResource ResponsivePaddingStyle}"
                       BackgroundColor="{StaticResource AccentColor}">
@@ -93,15 +94,14 @@
 
                     </Grid>
                     
-
                     <Button Style="{StaticResource PrimaryButtonStyle}"
-                            x:Name="buttonSaveImages"
                             HorizontalOptions="Fill"
-                            Text="SAVE PHOTO"
+                            Text="SAVE PROMO PHOTO"
                             VerticalOptions="Start"
                             Grid.Row="2"
                             Margin="0,10,0,0"
-                            Clicked="buttonSaveImages_Clicked">
+                            Command="{Binding SavePromoPhotoCommand}"
+                            CommandParameter="{Binding Source={x:Reference imagePromoText}, Path=CompositeImage}">
                     </Button>
                 </Grid>
 

@@ -154,7 +154,7 @@ namespace XFDemoApp.ViewModels
             {
                 if (SetProperty(ref selectedSearchOption, value))
                 {
-                    ExecuteSearchCommand(SearchText);
+                    _ = ExecuteSearchCommand(SearchText);
                 }
             }
         }

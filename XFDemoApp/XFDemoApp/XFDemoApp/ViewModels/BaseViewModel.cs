@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using XFDemoApp.Models;
+using XFDemoApp.Platform.Api;
 using XFDemoApp.Services;
 
 namespace XFDemoApp.ViewModels
@@ -13,6 +14,7 @@ namespace XFDemoApp.ViewModels
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Listing> DataStore => DependencyService.Get<IDataStore<Listing>>();
+        public ICrossPlatformService CrossPlatformService => DependencyService.Get<ICrossPlatformService>();
 
         bool isBusy = false;
         public bool IsBusy

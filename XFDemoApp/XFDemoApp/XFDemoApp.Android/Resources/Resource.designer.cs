@@ -18832,6 +18832,7 @@ namespace XFDemoApp.Droid
 			global::XFDemoApp.Platform.Droid.Resource.Xml.standalone_badge_gravity_bottom_start = global::XFDemoApp.Droid.Resource.Xml.standalone_badge_gravity_bottom_start;
 			global::XFDemoApp.Platform.Droid.Resource.Xml.standalone_badge_gravity_top_start = global::XFDemoApp.Droid.Resource.Xml.standalone_badge_gravity_top_start;
 			global::XFDemoApp.Platform.Droid.Resource.Xml.standalone_badge_offset = global::XFDemoApp.Droid.Resource.Xml.standalone_badge_offset;
+			global::XFDemoApp.Platform.Droid.Resource.Xml.xamarin_essentials_fileprovider_file_paths = global::XFDemoApp.Droid.Resource.Xml.xamarin_essentials_fileprovider_file_paths;
 		}
 		
 		public partial class Animation

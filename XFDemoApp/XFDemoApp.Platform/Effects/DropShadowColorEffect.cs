@@ -9,7 +9,7 @@ namespace XFDemoApp.Platform.Effects
     {
         public DropShadowColorEffect() : base($"{nameof(XFDemoApp)}.{nameof(DropShadowColorEffect)}") { }
 
-        public float Radius { get; set; } = 20f;
+        //public float Radius { get; set; } = 20f;
 
         public Color Color { get; set; } = Color.Gray;
     }

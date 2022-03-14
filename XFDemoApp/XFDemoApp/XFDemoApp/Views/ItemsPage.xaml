@@ -4,13 +4,10 @@
              x:Class="XFDemoApp.Views.ItemsPage"
              Title="{Binding Title}"
              xmlns:local="clr-namespace:XFDemoApp.ViewModels"
-             xmlns:model="clr-namespace:XFDemoApp.Models"
              xmlns:templates="clr-namespace:XFDemoApp.Views.Templates"
              BackgroundColor="{StaticResource MainWrapperBackgroundColor}"
-             xmlns:behaviors="clr-namespace:XFDemoApp.Behaviors"
              xmlns:effects="clr-namespace:XFDemoApp.Platform.Effects;assembly=XFDemoApp.Platform"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:droid="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="True"
              x:DataType="local:ItemsViewModel"
              x:Name="BrowseItemsPage">
@@ -122,22 +119,13 @@
                                 ItemSizingStrategy="MeasureFirstItem"
                                 SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                 SelectionMode="Single">
-                    <CollectionView.Behaviors>
-                        <behaviors:HighlightSelectedItemBehavior />
-                    </CollectionView.Behaviors>
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout ItemSpacing="10"
                                            Orientation="Vertical" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <!--<templates:ListingItemTemplate>
-                        <templates:ListingItemTemplate.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                        </templates:ListingItemTemplate.GestureRecognizers>
-                    </templates:ListingItemTemplate>-->
                             <templates:ListingItemTemplate />
-                            <!--<templates:ListingItemTemplate ItemTappedCommand="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}" />-->
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                     <CollectionView.EmptyView>

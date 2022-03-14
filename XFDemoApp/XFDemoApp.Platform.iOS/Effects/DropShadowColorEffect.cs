@@ -1,94 +1,59 @@
-﻿//using Android.Graphics.Drawables;
-//using AndroidX.CardView.Widget;
-//using System.ComponentModel;
-//using System.Linq;
-//using Xamarin.Forms;
-//using Xamarin.Forms.Platform.Android;
+﻿using CoreGraphics;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using UIKit;
+using Xamarin.Forms;
+using Xamarin.Forms.Platform.iOS;
 
-//[assembly: ExportEffect(typeof(XFDemoApp.Platform.Droid.Effects.DropShadowColorEffect), nameof(XFDemoApp.Platform.Effects.DropShadowColorEffect))]
+[assembly: ExportEffect(typeof(XFDemoApp.Platform.iOS.Effects.DropShadowColorEffect), nameof(XFDemoApp.Platform.iOS.Effects.DropShadowColorEffect))]
 
-//namespace XFDemoApp.Platform.Droid.Effects
-//{
-//    public class DropShadowColorEffect : PlatformEffect
-//    {
-//        Android.Graphics.Color originalAmbientShadowColor;
-//        Android.Graphics.Color originalSpotShadowColor;
+namespace XFDemoApp.Platform.iOS.Effects
+{
+    public class DropShadowColorEffect : PlatformEffect
+    {
+        CGColor originalShadowColor;
+        CGColor dropShadowColor = UIColor.Black.CGColor;
 
-//        float originalRadius = 0;
-//        float radius = 0;
+        UIView View => base.Control ?? base.Container;
 
-//        Android.Graphics.Color dropShadowColor = Color.Black.ToAndroid(); //Color.FromHex("#FF659AEA").ToAndroid();
+        protected override void OnAttached()
+        {
+            if (View is UIView cardView)
+            {
+                var effect = (XFDemoApp.Platform.Effects.DropShadowColorEffect)Element.Effects.FirstOrDefault(e => e is XFDemoApp.Platform.Effects.DropShadowColorEffect);
+                if (effect != null)
+                {
+                    dropShadowColor = effect.Color.ToCGColor();
+                }
 
-//        protected override void OnAttached()
-//        {
-//            if (Control is CardView cardView)
-//            {
-//                var background = cardView.Background;
+                originalShadowColor = cardView.Layer.ShadowColor;
+            }
 
-//                System.Diagnostics.Debug.WriteLine(background);
-//                System.Diagnostics.Debug.WriteLine(Resource.Color.cardview_shadow_start_color);
-//                System.Diagnostics.Debug.WriteLine(Resource.Attribute.cardElevation);
+            UpdateEffect();
+        }
 
-//                var effect = (XFDemoApp.Platform.Effects.DropShadowColorEffect)Element.Effects.FirstOrDefault(e => e is XFDemoApp.Platform.Effects.DropShadowColorEffect);
-//                if (effect != null)
-//                {
-//                    radius = effect.Radius;
-//                    dropShadowColor = effect.Color.ToAndroid();                    
-//                }
+        private void UpdateEffect()
+        {
+            if (Element is Frame frame && View is UIView cardView)
+            {
+                frame.HasShadow = true;
+                cardView.Layer.ShadowColor = dropShadowColor;
+            }
+        }
 
-//                originalRadius = cardView.Elevation;
-//                originalAmbientShadowColor = new Android.Graphics.Color(cardView.OutlineAmbientShadowColor);
-//                originalSpotShadowColor = new Android.Graphics.Color(cardView.OutlineSpotShadowColor);
-//            }
+        private void RemoveEffect()
+        {
+            if (Element is Frame frame && View is UIView cardView)
+            {
+                frame.HasShadow = false;
+                cardView.Layer.ShadowColor = originalShadowColor;
+            }
+        }
 
-//            UpdateEffect();
-//        }
-
-//        private void UpdateEffect()
-//        {
-//            if (Element is Frame frame && Control is CardView cardView)
-//            {
-//                frame.HasShadow = true;
-//                cardView.SetElevation(radius);
-//                cardView.SetOutlineAmbientShadowColor(dropShadowColor);
-//                cardView.SetOutlineSpotShadowColor(dropShadowColor);
-
-//                //if (frame.HasShadow)
-//                //{
-//                //    cardView.SetElevation(radius);
-//                //    cardView.SetOutlineAmbientShadowColor(dropShadowColor);
-//                //    cardView.SetOutlineSpotShadowColor(dropShadowColor);
-//                //}
-//                //else
-//                //{
-//                //    RemoveEffect();
-//                //}
-//            }
-//        }
-
-//        private void RemoveEffect()
-//        {
-//            if (Control is CardView cardView)
-//            {
-//                cardView.SetElevation(originalRadius);
-//                cardView.SetOutlineAmbientShadowColor(originalAmbientShadowColor);
-//                cardView.SetOutlineSpotShadowColor(originalSpotShadowColor);
-//            }
-//        }
-
-//        protected override void OnElementPropertyChanged(PropertyChangedEventArgs args)
-//        {
-//            base.OnElementPropertyChanged(args);
-
-//            //if (args.PropertyName == Frame.HasShadowProperty.PropertyName)
-//            //{
-//            //    UpdateEffect();
-//            //}
-//        }
-
-//        protected override void OnDetached()
-//        {
-//            RemoveEffect();
-//        }
-//    }
-//}
+        protected override void OnDetached()
+        {
+            RemoveEffect();
+        }
+    }
+}

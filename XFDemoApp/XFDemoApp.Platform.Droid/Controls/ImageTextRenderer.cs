@@ -84,7 +84,7 @@ namespace XFDemoApp.Platform.Droid.Controls
             {
                 if (!Element.IsLoading)
                 {
-                    UpdateSourceImage();
+                    _ = UpdateSourceImage();
                 }
             }
             else if (e.PropertyName == ImageText.TextProperty.PropertyName)
